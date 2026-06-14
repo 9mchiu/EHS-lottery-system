@@ -504,7 +504,7 @@
             ENERGY_INCREASE_RATE: 1.5,
             INFUSION_DURATION: 7000,
             ANIMATION_DURATION: 3000,
-            PARTICLE_COUNT: 20
+            PARTICLE_COUNT: 40
         };
 
         const PRIZES = [
@@ -518,7 +518,9 @@
         let gameState = {
             currentEnergy: 0,
             isInfusing: false,
-            currentScreen: 'attract'
+            currentScreen: 'attract',
+            lastBubbleMilestone: 0,
+            bubbleTimeout: null
         };
 
         const startBtn = document.getElementById('startBtn');
@@ -535,24 +537,27 @@
         infusionSphere.addEventListener('mousedown', startEnergyIncrease);
         infusionSphere.addEventListener('mouseup', stopEnergyIncrease);
         infusionSphere.addEventListener('mouseleave', stopEnergyIncrease);
-        infusionSphere.addEventListener('touchstart', startEnergyIncrease);
+        infusionSphere.addEventListener('touchstart', startEnergyIncrease, { passive: false });
         infusionSphere.addEventListener('touchend', stopEnergyIncrease);
+        infusionSphere.addEventListener('touchcancel', stopEnergyIncrease);
         resetBtn.addEventListener('click', resetGame);
 
         function startInfusion() {
             gameState.currentScreen = 'infusion';
             gameState.currentEnergy = 0;
+            gameState.lastBubbleMilestone = 0;
             attractScreen.classList.add('hidden');
             infusionScreen.classList.add('visible');
             resetBtn.style.display = 'none';
             updateEnergyDisplay();
         }
 
-        function startEnergyIncrease() {
+        function startEnergyIncrease(e) {
+            if (e && e.cancelable) e.preventDefault();
             if (gameState.isInfusing || gameState.currentEnergy >= 100) return;
             gameState.isInfusing = true;
             infusionSphere.classList.add('pressing');
-            
+
             const infusionInterval = setInterval(() => {
                 if (!gameState.isInfusing) {
                     clearInterval(infusionInterval);
@@ -560,11 +565,14 @@
                 }
                 gameState.currentEnergy = Math.min(100, gameState.currentEnergy + CONFIG.ENERGY_INCREASE_RATE);
                 updateEnergyDisplay();
-                
-                if (gameState.currentEnergy % 25 === 0) {
+
+                // 每跨過 25% 里程碑就跳一次角色提示（修正：原本用 %25 因步進 1.5 幾乎永不觸發）
+                const milestone = Math.floor(gameState.currentEnergy / 25) * 25;
+                if (milestone > gameState.lastBubbleMilestone && milestone < 100) {
+                    gameState.lastBubbleMilestone = milestone;
                     showCharacterBubble();
                 }
-                
+
                 if (gameState.currentEnergy >= 100) {
                     gameState.isInfusing = false;
                     infusionSphere.classList.remove('pressing');
@@ -574,7 +582,8 @@
             }, 50);
         }
 
-        function stopEnergyIncrease() {
+        function stopEnergyIncrease(e) {
+            if (e && e.cancelable) e.preventDefault();
             gameState.isInfusing = false;
             infusionSphere.classList.remove('pressing');
         }
@@ -600,8 +609,11 @@
                     <div>${character.msg}</div>
                 </div>
             `;
-            setTimeout(() => {
+            // 修正：清掉上一顆泡泡的 timeout，避免新泡泡被提前清空
+            if (gameState.bubbleTimeout) clearTimeout(gameState.bubbleTimeout);
+            gameState.bubbleTimeout = setTimeout(() => {
                 bubble.innerHTML = '';
+                gameState.bubbleTimeout = null;
             }, 3000);
         }
 
@@ -633,7 +645,7 @@
                 badgeText = '至尊大獎 🌈';
             }
             document.getElementById('prizeLevel').innerHTML = `<div class="prize-level-badge ${badgeClass}">${badgeText}</div>`;
-            burstParticles(50);
+            burstParticles(CONFIG.PARTICLE_COUNT);
             resetBtn.style.display = 'block';
         }
 
@@ -661,7 +673,13 @@
         function resetGame() {
             gameState.currentScreen = 'attract';
             gameState.currentEnergy = 0;
+            gameState.isInfusing = false;
+            gameState.lastBubbleMilestone = 0;
+            if (gameState.bubbleTimeout) { clearTimeout(gameState.bubbleTimeout); gameState.bubbleTimeout = null; }
+            document.getElementById('characterBubble').innerHTML = '';
+            infusionSphere.classList.remove('pressing');
             revealScreen.classList.remove('visible');
+            infusionScreen.classList.remove('visible');
             attractScreen.classList.remove('hidden');
             resetBtn.style.display = 'none';
             updateEnergyDisplay();

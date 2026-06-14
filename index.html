@@ -59,21 +59,21 @@
         }
 
         .cta-text {
-            font-size: 20px;
-            color: #fef294;
-            font-weight: 600;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-size: 22px;
+            color: #1f4d12;
+            font-weight: 800;
+            margin-bottom: 6px;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.65), 0 0 2px rgba(255, 255, 255, 0.5);
             animation: pulse-text 2s ease-in-out infinite;
         }
 
         .cta-subtitle {
-            font-size: 12px;
-            color: #fef294;
-            font-weight: 400;
+            font-size: 13px;
+            color: #2c6b1a;
+            font-weight: 600;
             margin-bottom: 15px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            opacity: 0.9;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+            opacity: 1;
         }
 
         @keyframes pulse-text {
@@ -83,13 +83,13 @@
 
         .wooden-btn {
             display: inline-block;
-            padding: 16px 40px;
-            font-size: 18px;
+            padding: 24px 60px;
+            font-size: 27px;
             font-weight: 700;
             color: #fff;
             background: linear-gradient(135deg, #8B5A2B 0%, #A0683A 100%);
             border: none;
-            border-radius: 50px;
+            border-radius: 60px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 
@@ -117,10 +117,10 @@
             bottom: 30px;
             text-align: center;
             width: 100%;
-            font-size: 14px;
-            color: #fef294;
-            font-weight: 600;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            font-size: 15px;
+            color: #1f4d12;
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
         }
 
         .bottom-subtitle {
@@ -128,11 +128,11 @@
             bottom: 12px;
             text-align: center;
             width: 100%;
-            font-size: 11px;
-            color: #fef294;
-            font-weight: 400;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            opacity: 0.85;
+            font-size: 12px;
+            color: #2c6b1a;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.55);
+            opacity: 1;
         }
 
         /* ========== SCREEN: 灌注動畫 ========== */
@@ -198,10 +198,10 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 26px;
+            font-weight: 800;
             color: #fff;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.45);
             pointer-events: none;
         }
 
@@ -251,22 +251,22 @@
         }
 
         .sphere-text {
-            font-size: 20px;
+            font-size: 28px;
             color: #0c0c0c;
-            font-weight: 600;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.4);
             text-align: center;
             position: relative;
             z-index: 1;
         }
 
         .sphere-subtitle {
-            font-size: 12px;
-            color: #fef294;
-            font-weight: 400;
+            font-size: 16px;
+            color: #1f4d12;
+            font-weight: 600;
             margin-top: 30px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-            opacity: 0.9;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+            opacity: 1;
         }
 
         @keyframes character-appear {
@@ -319,9 +319,9 @@
         }
 
         .prize-card {
-            width: 450px;
-            max-width: 90vw;
-            padding: 75px 60px;
+            width: 560px;
+            max-width: 92vw;
+            padding: 75px 60px 96px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(200, 230, 201, 0.4));
             border-radius: 30px;
             border: 3px solid #8BC34A;
@@ -434,17 +434,17 @@
         }
 
         .reset-button {
-            position: fixed;
-            bottom: 80px;
-            right: 40px;
-            padding: 12px 24px;
+            position: absolute;
+            bottom: 22px;
+            right: 22px;
+            padding: 18px 36px;
             background: linear-gradient(135deg, #8B5A2B, #A0683A);
             color: #fff;
             border: 2px solid rgba(255, 215, 0, 0.6);
             border-radius: 30px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 21px;
+            font-weight: 700;
             transition: all 0.3s ease;
             z-index: 100;
         }
@@ -494,15 +494,14 @@
                 <div class="prize-title" id="prizeTitle">獲得獎品</div>
                 <div class="prize-description" id="prizeDescription">感謝您的守護</div>
                 <div id="prizeLevel"></div>
+                <button class="reset-button" id="resetBtn" style="display: none;">← 返回首頁</button>
             </div>
         </div>
-
-        <button class="reset-button" id="resetBtn" style="display: none;">← 返回首頁</button>
     </div>
 
     <script>
         const CONFIG = {
-            ENERGY_INCREASE_RATE: 1.5,
+            ENERGY_INCREASE_RATE: 3,
             INFUSION_DURATION: 7000,
             ANIMATION_DURATION: 3000,
             PARTICLE_COUNT: 40
